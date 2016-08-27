@@ -1,6 +1,6 @@
 # Kaiyote
 
-Kaiyote is a typesafe configuration management tool inspired by [Itamae](https://github.com/itamae-kitchen/itamae).
+Kaiyote is a typesafe configuration management tool inspired by [Itamae](https://github.com/itamae-kitchen/itamae). 
 
 ## Installation
 

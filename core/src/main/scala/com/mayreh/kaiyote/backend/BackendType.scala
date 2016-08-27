@@ -1,4 +1,4 @@
-package com.mayreh.kaiyote.data
+package com.mayreh.kaiyote.backend
 
 /**
  * Represents backend type.
@@ -10,4 +10,3 @@ object BackendType {
   // TODO
   // case object SSH extends BackendType
 }
-
