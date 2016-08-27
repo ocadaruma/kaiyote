@@ -4,6 +4,9 @@ Kaiyote is a typesafe configuration management tool inspired by [Itamae](https:/
 
 ## Installation
 
+T.B.D.
+
+<!--
 Kaiyote is provided as sbt plugin.
 
 ```bash
@@ -11,9 +14,13 @@ $ echo 'scalaVersion := "2.11.8"' > build.sbt
 $ mkdir project
 $ echo 'addSbtPlugin("com.mayreh" % "kaiyote" % "0.0.1")' > project/plugins.sbt
 ```
+-->
 
 ## Getting Started
 
+T.B.D.
+
+<!--
 Create a configuration as `Example.scala`:
 
 ```scala
@@ -39,6 +46,7 @@ $ sbt run local
  INFO :    directory[/home/kaiyote/hello] exist will change from 'false' to 'true'
  INFO :    execute[create empty file] executed will change from 'false' to 'true'
 ```
+-->
 
 ## T.B.D.
 
