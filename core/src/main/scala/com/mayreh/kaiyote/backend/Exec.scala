@@ -17,8 +17,8 @@ trait Exec extends Backend {
     val status = builder.run(processLogger).exitValue()
 
     CommandResult(
-      Some(stdoutLog.result()),
-      Some(stderrLog.result()),
+      stdoutLog.result(),
+      stderrLog.result(),
       status
     )
   }

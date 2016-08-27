@@ -29,11 +29,11 @@ object AccessMode {
  * Currently, special permissions (setuid, setgid, sticky) are not supported.
  */
 case class FilePermission(u: AccessMode, g: AccessMode, o: AccessMode) {
-  override def toString = s"${u.toInt}${g.toInt}${o.toInt}"
+  override def toString = s"0${u.toInt}${g.toInt}${o.toInt}"
 }
 
 object FilePermission {
-  val regex = "0?([0-7][0-7][0-7])".r
+  val regex = "0?([0-7])([0-7])([0-7])".r
 
   /**
    * Parse permission string to FilePermission.
