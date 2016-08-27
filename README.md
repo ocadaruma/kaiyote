@@ -19,6 +19,7 @@ Create a configuration as `Example.scala`:
 ```scala
 package com.example
 
+import com.mayreh.kaiyote.dsl._
 import com.mayreh.kaiyote.Root
 
 object Example extends Root {
