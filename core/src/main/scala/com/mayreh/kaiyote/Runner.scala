@@ -3,6 +3,9 @@ package com.mayreh.kaiyote
 import com.mayreh.kaiyote.backend.{Backend, BackendType, Local}
 import com.mayreh.kaiyote.resource.Resource
 
+/**
+ * Run resources on specific backend.
+ */
 class Runner(backend: Backend) {
   def run(resources: Vector[Resource]): Unit = {
     resources.foreach { resource =>

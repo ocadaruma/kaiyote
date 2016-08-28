@@ -11,6 +11,9 @@ lazy val core = (project in file("core"))
   .settings(
     libraryDependencies ++= Seq(
       commonsIO % Compile,
+      slf4jAPI % Compile,
+      logback % Compile,
+
       scalaTest % Test
     )
   )
