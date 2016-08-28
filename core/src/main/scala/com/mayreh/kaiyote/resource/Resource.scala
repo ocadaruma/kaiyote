@@ -34,7 +34,11 @@ trait Resource {
 
   protected def runCommand(backend: Backend, cmd: Command): CommandResult = backend.runCommand(cmd)
 
-  private[this] def runAction(backend: Backend): Unit = {
+  protected def runAction(backend: Backend): Unit = {
     actions.foreach(runSingleAction(backend, _))
+  }
+
+  protected def showDifferences(): Unit = {
+
   }
 }

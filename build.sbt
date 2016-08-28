@@ -10,6 +10,7 @@ lazy val core = (project in file("core"))
   .settings(commonSettings: _*)
   .settings(
     libraryDependencies ++= Seq(
+      commonsIO % Compile,
       scalaTest % Test
     )
   )
