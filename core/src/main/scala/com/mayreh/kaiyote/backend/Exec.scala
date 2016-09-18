@@ -1,5 +1,7 @@
 package com.mayreh.kaiyote.backend
 
+import com.mayreh.kaiyote.data.{Stderr, Stdout}
+
 import scala.sys.process.{Process, ProcessLogger}
 
 /**
@@ -17,8 +19,8 @@ trait Exec extends Backend {
     val status = builder.run(processLogger).exitValue()
 
     CommandResult(
-      stdoutLog.result(),
-      stderrLog.result(),
+      Stdout(stdoutLog.result()),
+      Stderr(stderrLog.result()),
       status
     )
   }

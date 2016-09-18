@@ -2,46 +2,54 @@ package com.mayreh.kaiyote.resource
 
 import java.io.File
 
-import com.mayreh.kaiyote.backend.{Backend, Command}
-import com.mayreh.kaiyote.data.FilePermission
+import com.mayreh.kaiyote.backend.Backend
+import com.mayreh.kaiyote.data.{FileGroup, FileOwner, FilePermission}
 
-sealed abstract class DirectoryAction extends Action
-object DirectoryAction {
-  case object Ignore extends DirectoryAction
-  case object Create extends DirectoryAction
-  case object Delete extends DirectoryAction
-}
-
-case class DirectoryAttributes(
+case class DirectoryState(
   exists: Boolean,
   mode: Option[FilePermission] = None,
-  owner: Option[String] = None,
-  group: Option[String] = None
-)
+  owner: Option[FileOwner] = None,
+  group: Option[FileGroup] = None
+) extends State {
+
+  def describe: String = {
+
+  }
+}
 
 /**
  * Represents resource that manipulates directory.
  */
 case class Directory(
+  name: String,
   path: File,
-  actions: List[DirectoryAction] = List(DirectoryAction.Create),
-  onlyIf: Option[Command] = None,
-  notIf: Option[Command] = None
-) extends Resource {
+  to: DirectoryState
+) extends Resource[DirectoryState] {
 
-  type ActionType = DirectoryAction
+  def current(backend: Backend): DirectoryState = {
+    val exists = backend.isDirectory(path)
 
-  def runSingleAction(backend: Backend, action: DirectoryAction): Unit = action match {
-    case DirectoryAction.Ignore => // do nothing
-    case DirectoryAction.Create => println("to be implemented")
-    case DirectoryAction.Delete => println("to be implemented")
+    DirectoryState(
+      exists = exists,
+      mode = if (exists) Some(backend.getFileMode(path)) else None,
+      owner = if (exists) Some(backend.getFileOwner(path)) else None,
+      group = if (exists) Some(backend.getFileGroup(path)) else None
+    )
   }
 
-  //========================
-  // for fluent interface
-  //========================
-  def action(action: DirectoryAction): Directory = copy(actions = List(action))
-  def actions(actions: List[DirectoryAction]): Directory = copy(actions = actions)
-  def onlyIf(command: String): Directory = copy(onlyIf = Some(Command(command)))
-  def notIf(command: String): Directory = copy(notIf = Some(Command(command)))
+  def run(backend: Backend): Unit = {
+    if (to.exists) {
+      if (!current(backend).exists) {
+        backend.createFileAsDirectory(path)
+      }
+
+      to.mode.foreach(backend.changeFileMode(path, _))
+      to.owner.foreach(backend.changeFileOwner(path, _))
+      to.group.foreach(backend.changeFileGroup(path, _))
+    } else {
+      if (current(backend).exists) {
+        backend.removeFile(path)
+      }
+    }
+  }
 }

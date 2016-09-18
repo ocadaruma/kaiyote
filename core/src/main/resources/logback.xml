@@ -1,6 +1,6 @@
 <configuration>
 
-    <property name="ROOT_LEVEL" value="${LOG_LEVEL:-INFO}"/>
+    <property name="ROOT_LEVEL" value="${LOG_LEVEL:-DEBUG}"/>
     <property name="APPENDER_NAME" value="${APPENDER_NAME:-STDOUT}"/>
 
     <!-- prevents messages while initialization -->

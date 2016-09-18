@@ -2,6 +2,17 @@
 
 Kaiyote is a typesafe configuration management tool inspired by [Itamae](https://github.com/itamae-kitchen/itamae). 
 
+<!--
+## Comparison
+
+||Kaiyote|Itamae|Ansible|
+|:--|:--|:--|:--|
+|Language|Scala|Ruby|Python|
+|File Format|Scala DSL|Ruby DSL|YAML|
+|Installation|sbt|gem|pip|
+|Module provider|maven|gem| N/A |
+-->
+
 ## Installation
 
 T.B.D.

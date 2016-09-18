@@ -1,44 +1,30 @@
 package com.mayreh.kaiyote.resource
 
-import com.mayreh.kaiyote.backend.{CommandResult, Command, Backend}
-import com.mayreh.kaiyote.misc.tap._
+import com.mayreh.kaiyote.backend.Backend
+import com.mayreh.kaiyote.logger.Loggable
 
-trait Resource {
-  type ActionType <: Action
+/**
+ * Represents a resource to be configured.
+ */
+trait Resource[A <: State] extends Loggable {
 
-  //========================
-  // abstract members
-  //========================
-  def actions: List[ActionType]
+  /**
+   * Display-name.
+   */
+  def name: String
 
-  def onlyIf: Option[Command]
+  /**
+   * Desired state.
+   */
+  def to: A
 
-  def notIf: Option[Command]
+  /**
+   * Current state of this resource.
+   */
+  def current(backend: Backend): A
 
-  def runSingleAction(backend: Backend, action: ActionType): Unit
-
-  def run(backend: Backend): Unit = {
-    def shouldSkipBecauseOnlyIf(): Boolean = onlyIf.fold(false)(runCommand(backend, _).exitStatus != 0).tapTrue {
-      // TODO LOG
-      println("Skipped because command failed.")
-    }
-    def shouldSkipBecauseNotIf(): Boolean = notIf.fold(false)(runCommand(backend, _).exitStatus == 0).tapTrue {
-      // TODO LOG
-      println("Skipped because command succeeded.")
-    }
-
-    if (!shouldSkipBecauseOnlyIf() && !shouldSkipBecauseNotIf()) {
-      runAction(backend)
-    }
-  }
-
-  protected def runCommand(backend: Backend, cmd: Command): CommandResult = backend.runCommand(cmd)
-
-  protected def runAction(backend: Backend): Unit = {
-    actions.foreach(runSingleAction(backend, _))
-  }
-
-  protected def showDifferences(): Unit = {
-
-  }
+  /**
+   * Change the state to desired one. (may be side-effecting)
+   */
+  def run(backend: Backend): Unit
 }

@@ -1,33 +1,21 @@
+import Aux._
 import Dependencies._
 
-val commonSettings: Seq[Setting[_]] = Seq(
-  scalaVersion := "2.11.8"
-)
-
-val perConf = "test->test;compile->compile"
-
-lazy val core = (project in file("core"))
-  .settings(commonSettings: _*)
+lazy val core = mkProject("core")
   .settings(
-    libraryDependencies ++= Seq(
-      commonsIO % Compile,
-      slf4jAPI % Compile,
-      logback % Compile,
-
-      scalaTest % Test
-    )
+    libraryDependencies ++= forCompile(commonsIO, slf4jAPI, logback) ++ forTest(scalatest)
   )
   .enablePlugins(SbtTwirl)
 
-lazy val cli = (project in file("cli"))
-  .settings(commonSettings: _*)
+lazy val cli = mkProject("cli")
   .settings(
-    libraryDependencies ++= Seq(
-      scopt % Compile
-    )
+    libraryDependencies ++= forCompile(scopt)
   )
   .dependsOn(core % perConf)
 
-lazy val example = (project in file("example"))
-  .settings(commonSettings: _*)
+lazy val example = mkProject("example")
+  .dependsOn(cli)
+
+lazy val plugin = mkProject("plugin")
+  .settings(sbtPlugin := true)
   .dependsOn(cli)

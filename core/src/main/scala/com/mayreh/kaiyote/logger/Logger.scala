@@ -128,9 +128,9 @@ trait Logger {
     if (slf4jLogger.isTraceEnabled) slf4jLogger.trace(color.colorize(shapeMessage(msg)), t)
   }
 
-  //========================
-  // indentation
-  //========================
+  /**
+   * Provides indented context.
+   */
   def withIndent[A](f: Logger => A): A = {
     val rootLogger = slf4jLogger
     val currentContext = context

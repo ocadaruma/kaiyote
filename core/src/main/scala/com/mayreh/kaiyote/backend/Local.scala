@@ -4,7 +4,7 @@ import java.io.File
 import java.nio.file.{FileSystems, Files}
 import java.nio.file.attribute.{PosixFileAttributeView, PosixFileAttributes}
 
-import com.mayreh.kaiyote.data.FilePermission
+import com.mayreh.kaiyote.data.{FileOwner, FileGroup, FilePermission}
 import org.apache.commons.io.FileUtils
 
 import scala.collection.JavaConverters._
@@ -36,19 +36,19 @@ class Local extends Exec {
     Files.setPosixFilePermissions(path.toPath, mode.toPosixFilePermission.asJava)
   }
 
-  def getGroup(path: File): String = {
-    Files.readAttributes(path.toPath, classOf[PosixFileAttributes]).group().getName
+  def getFileGroup(path: File): FileGroup = {
+    FileGroup(Files.readAttributes(path.toPath, classOf[PosixFileAttributes]).group().getName)
   }
 
-  def changeFileGroup(path: File, group: String): Unit = {
+  def changeFileGroup(path: File, group: FileGroup): Unit = {
     val service = FileSystems.getDefault.getUserPrincipalLookupService
 
     Files.getFileAttributeView(path.toPath, classOf[PosixFileAttributeView])
-      .setGroup(service.lookupPrincipalByGroupName(group))
+      .setGroup(service.lookupPrincipalByGroupName(group.value))
   }
 
-  def getOwner(path: File): String = {
-    Files.getOwner(path.toPath).getName
+  def getFileOwner(path: File): FileOwner = {
+    FileOwner(Files.getOwner(path.toPath).getName)
   }
 
   def removeFile(path: File): Unit = if (path.isDirectory) {
@@ -57,9 +57,9 @@ class Local extends Exec {
     path.delete()
   }
 
-  def changeFileOwner(path: File, owner: String): Unit = {
+  def changeFileOwner(path: File, owner: FileOwner): Unit = {
     val service = FileSystems.getDefault.getUserPrincipalLookupService
 
-    Files.setOwner(path.toPath, service.lookupPrincipalByName(owner))
+    Files.setOwner(path.toPath, service.lookupPrincipalByName(owner.value))
   }
 }

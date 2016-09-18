@@ -2,7 +2,7 @@ package com.mayreh.kaiyote.backend
 
 import java.io.File
 
-import com.mayreh.kaiyote.data.FilePermission
+import com.mayreh.kaiyote.data.{FileGroup, FileOwner, FilePermission}
 
 /**
  * Represents backend to run configurations.
@@ -15,17 +15,17 @@ trait Backend extends AutoCloseable {
 
   def getFileMode(path: File): FilePermission
 
-  def getOwner(path: File): String
+  def getFileOwner(path: File): FileOwner
 
-  def getGroup(path: File): String
+  def getFileGroup(path: File): FileGroup
 
   def createFileAsDirectory(path: File): Unit
 
   def changeFileMode(path: File, mode: FilePermission): Unit
 
-  def changeFileOwner(path: File, owner: String)
+  def changeFileOwner(path: File, owner: FileOwner): Unit
 
-  def changeFileGroup(path: File, group: String)
+  def changeFileGroup(path: File, group: FileGroup): Unit
 
   def removeFile(path: File): Unit
 }
